@@ -12,5 +12,6 @@ export const constants = {
     UNAUTHORISED: 401,
     RESOURCE_CONFLICT: 409,
     INTERNAL_SERVER: 500,
+    BAD_REQUEST_ERROR: 404,
   },
 };

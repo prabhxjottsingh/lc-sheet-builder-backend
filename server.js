@@ -18,9 +18,15 @@ app.use(bodyParser.json());
 
 // Routes
 import authRoutes from "./routes/authRoutes.js";
+import sheetRoutes from "./routes/sheetRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
 app.use("/api/auth", authRoutes);
+app.use("/api/sheets", sheetRoutes);
+app.use("/api/category", categoryRoutes);
 
 const PORT = process.env.PORT || 5000;
+export const JWT_SECRET = process.env.JWT_SECRET || "abcdefghijklmnop";
+export const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
 
 // Start the server
 app.listen(PORT, async () => {
@@ -28,7 +34,6 @@ app.listen(PORT, async () => {
   console.log(chalk.green(`Server running on port ${PORT}`));
 });
 
-// Graceful shutdown for production-level handling
 process.on("SIGINT", () => {
   console.log(chalk.yellow("Shutting down server..."));
   mongoose.connection.close(() => {

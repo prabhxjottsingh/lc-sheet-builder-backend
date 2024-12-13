@@ -12,4 +12,5 @@ export const dbGetUserByEmail = async (params) => {
 export const dbCreateNewUser = async (params) => {
   const user = new User(params);
   await user.save();
+  return user;
 };
