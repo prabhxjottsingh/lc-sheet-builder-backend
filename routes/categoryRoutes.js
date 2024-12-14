@@ -8,6 +8,7 @@ import {
 } from "../Middlewares/apiRequestModels/categoryRequestModal.js";
 import {
   addNewCategory,
+  deleteCategory,
   getCategoryMetadataById,
   getCategoryMetadataBySheetId,
 } from "../controllers/categoryController.js";
@@ -33,5 +34,7 @@ router.get(
   validateRequest(getCategoryMetadataByIdRequest),
   getCategoryMetadataById
 );
+
+router.delete("/deletecategory", decryptAuthToken, deleteCategory);
 
 export default router;

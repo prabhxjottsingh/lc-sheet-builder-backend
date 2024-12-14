@@ -18,14 +18,14 @@ const categorySchema = new mongoose.Schema({
       type: String,
     },
   },
-  //   data: {
-  // problemIds: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Sheet", // Reference to the Sheet model
-  //   },
-  // ],
-  //   },
+    data: {
+  problemIds: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Problem", // Reference to the Problem model
+    },
+  ],
+    },
   createdAt: {
     type: Date,
     default: Date.now,

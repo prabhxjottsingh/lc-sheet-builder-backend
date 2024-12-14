@@ -1,6 +1,8 @@
 import { dbCreateNewCategory } from "../dbAccessor/categoryDbAccessor.js";
 import {
   dbCreateNewSheet,
+  dbDeleteSheetById,
+  dbGetSheetBySheetId,
   dbGetSheetsMetadataByUserId,
 } from "../dbAccessor/sheetDbAccessor.js";
 import { Category } from "../models/Category.js";
@@ -62,6 +64,27 @@ export const getSheetsMetadataByUserId = async (req, res) => {
     console.error("Error while fetching users sheet:", error);
     return errorResponse(res, INTERNAL_SERVER_ERROR, {
       message: "Error while fetching users sheet",
+    });
+  }
+};
+
+export const deleteSheet = async (req, res) => {
+  const { sheetId } = req.query;
+  try {
+    const sheetData = await dbGetSheetBySheetId({ sheetId });
+    if (sheetData.data.categoryIds.length > 1) {
+      return errorResponse(res, INTERNAL_SERVER_ERROR, {
+        message: "Please delete all the categories under the sheets first",
+      });
+    }
+    await dbDeleteSheetById({ sheetId });
+    return successResponse(res, SUCCESS, {
+      message: "Sheet deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error occured while deleting sheets: ", error);
+    return errorResponse(res, INTERNAL_SERVER_ERROR, {
+      message: "Error while deleting the sheet",
     });
   }
 };

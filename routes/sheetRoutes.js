@@ -2,6 +2,7 @@ import express from "express";
 import { decryptAuthToken } from "../Middlewares/tokenDecryption.js";
 import {
   addNewSheet,
+  deleteSheet,
   getSheetsMetadataByUserId,
 } from "../controllers/sheetController.js";
 import { validateRequest } from "../Middlewares/tyepSafetyValidationCheck.js";
@@ -20,5 +21,7 @@ router.get(
   decryptAuthToken,
   getSheetsMetadataByUserId
 );
+
+router.delete("/deletesheet", decryptAuthToken, deleteSheet);
 
 export default router;

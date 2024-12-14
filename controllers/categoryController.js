@@ -1,10 +1,13 @@
 import {
   dbCreateNewCategory,
+  dbDeleteCategoryById,
   dbGetCategoryById,
 } from "../dbAccessor/categoryDbAccessor.js";
 import {
   dbAddNewCategoryToSheet,
   dbGetCategoryIdsBySheetId,
+  dbGetSheetBySheetId,
+  dbUpdateCategoryIdsInSheet,
 } from "../dbAccessor/sheetDbAccessor.js";
 import { Category } from "../models/Category.js";
 import { errorResponse, successResponse } from "../utils/apiResponse.js";
@@ -72,6 +75,42 @@ export const getCategoryMetadataById = async (req, res) => {
     console.error("Error while fetching users sheet:", error);
     return errorResponse(res, INTERNAL_SERVER_ERROR, {
       message: "Error while fetching users sheet",
+    });
+  }
+};
+
+export const deleteCategory = async (req, res) => {
+  const { categoryId, sheetId } = req.query;
+  try {
+    console.log("DeleteCategoryL: ", categoryId);
+    console.log("updatedhSheetId: ", sheetId);
+    const categoryData = await dbGetCategoryById({ categoryId });
+    const sheetData = await dbGetSheetBySheetId({ sheetId });
+    if (categoryData.data.problemIds.length > 0) {
+      return errorResponse(res, INTERNAL_SERVER_ERROR, {
+        message: "Delete all the problems under the category first",
+      });
+    }
+
+    // Filter out the category ID from the sheet's category list
+    const updatedSheetCategories = sheetData.data.categoryIds.filter(
+      (id) => id != categoryId
+    );
+    console.log("UpdatedSheetCat: ", updatedSheetCategories);
+    // Update the sheet with the new list of categories
+    await dbUpdateCategoryIdsInSheet({
+      sheetId,
+      categoryIds: updatedSheetCategories,
+    });
+
+    // await dbDeleteCategoryById({ categoryId });
+    return successResponse(res, SUCCESS, {
+      message: "Category deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error occured while deleting sheets: ", error);
+    return errorResponse(res, INTERNAL_SERVER_ERROR, {
+      message: "Error while deleting the sheet",
     });
   }
 };
