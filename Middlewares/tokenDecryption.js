@@ -14,7 +14,6 @@ export const decryptAuthToken = (req, res, next) => {
     });
   }
   try {
-    // Decrypt and verify the token
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();

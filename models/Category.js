@@ -18,20 +18,18 @@ const categorySchema = new mongoose.Schema({
       type: String,
     },
   },
-    data: {
-  problemIds: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Problem", // Reference to the Problem model
-    },
-  ],
-    },
+  data: {
+    problemIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Problem", // Reference to the Problem model
+      },
+    ],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
-
-// Optional: You can add any pre-save hooks or methods if needed.
 
 export const Category = mongoose.model("Category", categorySchema);

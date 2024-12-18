@@ -6,10 +6,8 @@ import mongoose from "mongoose";
 import chalk from "chalk";
 import connectDb from "./utils/connectDB.js";
 
-// Load environment variables
 dotenv.config();
 
-// Initialize app and database
 const app = express();
 
 // Middleware
@@ -30,7 +28,6 @@ const PORT = process.env.PORT || 5000;
 export const JWT_SECRET = process.env.JWT_SECRET || "abcdefghijklmnop";
 export const JWT_EXPIRATION = process.env.JWT_EXPIRATION || "1h";
 
-// Start the server
 app.listen(PORT, async () => {
   await connectDb();
   console.log(chalk.green(`Server running on port ${PORT}`));

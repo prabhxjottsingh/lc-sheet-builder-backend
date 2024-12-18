@@ -82,8 +82,6 @@ export const getCategoryMetadataById = async (req, res) => {
 export const deleteCategory = async (req, res) => {
   const { categoryId, sheetId } = req.query;
   try {
-    console.log("DeleteCategoryL: ", categoryId);
-    console.log("updatedhSheetId: ", sheetId);
     const categoryData = await dbGetCategoryById({ categoryId });
     const sheetData = await dbGetSheetBySheetId({ sheetId });
     if (categoryData.data.problemIds.length > 0) {
@@ -92,18 +90,15 @@ export const deleteCategory = async (req, res) => {
       });
     }
 
-    // Filter out the category ID from the sheet's category list
     const updatedSheetCategories = sheetData.data.categoryIds.filter(
       (id) => id != categoryId
     );
-    console.log("UpdatedSheetCat: ", updatedSheetCategories);
-    // Update the sheet with the new list of categories
     await dbUpdateCategoryIdsInSheet({
       sheetId,
       categoryIds: updatedSheetCategories,
     });
 
-    // await dbDeleteCategoryById({ categoryId });
+    await dbDeleteCategoryById({ categoryId });
     return successResponse(res, SUCCESS, {
       message: "Category deleted successfully",
     });

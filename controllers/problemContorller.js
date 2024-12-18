@@ -33,7 +33,6 @@ export const addNewProblem = async (req, res) => {
       })
     );
 
-    // Add the created problem IDs to the category
     await dbAddProblemsToCategory({
       categoryId,
       problemIds: problemIdsObjectIds,
@@ -69,9 +68,7 @@ export const getProblems = async (req, res) => {
 export const getProblemsByCategoryId = async (req, res) => {
   const { categoryId } = req.query;
   try {
-    console.log("This is the categoryId: ", categoryId);
     const categoryData = await dbGetCategoryById({ categoryId });
-    console.log("This is the categoryData: ", categoryData);
     const problemIds = categoryData?.data?.problemIds || [];
     const responses = await Promise.all(
       problemIds.map((problemId) => dbGetProblemById({ problemId }))

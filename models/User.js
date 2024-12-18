@@ -24,7 +24,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// convert email address to lowercase before insertions
 userSchema.pre("save", function (next) {
   this.email = this.email.toLowerCase();
   next();
