@@ -72,7 +72,7 @@ export const deleteSheet = async (req, res) => {
   const { sheetId } = req.query;
   try {
     const sheetData = await dbGetSheetBySheetId({ sheetId });
-    if (sheetData.data.categoryIds.length > 1) {
+    if (sheetData && sheetData.data.categoryIds.length > 1) {
       return errorResponse(res, INTERNAL_SERVER_ERROR, {
         message: "Please delete all the categories under the sheets first",
       });
