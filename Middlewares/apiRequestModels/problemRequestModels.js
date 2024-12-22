@@ -6,3 +6,10 @@ export const addNewProblemRequest = z.object({
     problemIds: z.array(z.object({})).nonempty(),
   }),
 });
+
+export const markedProblemStateChangeRequest = z.object({
+  body: z.object({
+    problemId: z.string().nonempty(),
+    isMarkedDone: z.boolean(),
+  }),
+});

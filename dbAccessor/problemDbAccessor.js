@@ -16,3 +16,12 @@ export const dbGetProblemById = async (params) => {
 export const dbDeleteProblemById = async (params) => {
   await Problem.findByIdAndDelete(params.problemId);
 };
+
+export const dbUpdateProblemMarkedDoneState = async (params) => {
+  const updatedProblem = await Problem.findByIdAndUpdate(
+    params.problemObjectId,
+    { isMarkedDone: params.isMarkedDone },
+    { new: true }
+  );
+  return updatedProblem;
+};

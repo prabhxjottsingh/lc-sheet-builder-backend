@@ -12,9 +12,7 @@ export const dbGetSheetBySheetId = async (params) => {
 };
 
 export const dbGetSheetsMetadataByUserId = async (params) => {
-  const sheets = await Sheet.find(
-    { createdBy: params.userId }
-  );
+  const sheets = await Sheet.find({ createdBy: params.userId });
   return sheets;
 };
 
@@ -37,7 +35,7 @@ export const dbGetCategoryIdsBySheetId = async (params) => {
     "data.categoryIds": 1,
     _id: 0,
   });
-  return sheet.data.categoryIds;
+  return sheet?.data?.categoryIds || [];
 };
 
 export const dbDeleteSheetById = async (params) => {

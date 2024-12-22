@@ -1,12 +1,16 @@
 import express from "express";
 import { decryptAuthToken } from "../Middlewares/tokenDecryption.js";
 import { validateRequest } from "../Middlewares/tyepSafetyValidationCheck.js";
-import { addNewProblemRequest } from "../Middlewares/apiRequestModels/problemRequestModels.js";
+import {
+  addNewProblemRequest,
+  markedProblemStateChangeRequest,
+} from "../Middlewares/apiRequestModels/problemRequestModels.js";
 import {
   addNewProblem,
   deleteProblem,
   getProblems,
   getProblemsByCategoryId,
+  markProblemStateChange,
 } from "../controllers/problemContorller.js";
 const router = express.Router();
 
@@ -24,6 +28,13 @@ router.get(
 );
 
 router.get("/getproblems", decryptAuthToken, getProblems);
+
+router.post(
+  "/markProblem",
+  decryptAuthToken,
+  validateRequest(markedProblemStateChangeRequest),
+  markProblemStateChange
+);
 
 router.delete("/deleteproblem", decryptAuthToken, deleteProblem);
 

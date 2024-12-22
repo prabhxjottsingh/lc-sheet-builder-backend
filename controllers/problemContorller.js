@@ -7,6 +7,7 @@ import {
   dbCreateNewProblem,
   dbDeleteProblemById,
   dbGetProblemById,
+  dbUpdateProblemMarkedDoneState,
 } from "../dbAccessor/problemDbAccessor.js";
 import {} from "../dbAccessor/sheetDbAccessor.js";
 import { Problem } from "../models/Problem.js";
@@ -102,6 +103,27 @@ export const deleteProblem = async (req, res) => {
     console.error("Error occured while deleting problem: ", error);
     return errorResponse(res, INTERNAL_SERVER_ERROR, {
       message: "Error while deleting the problem",
+    });
+  }
+};
+
+export const markProblemStateChange = async (req, res) => {
+  const { problemId, isMarkedDone } = req.body;
+  try {
+    const result = await dbUpdateProblemMarkedDoneState({
+      problemObjectId: problemId,
+      isMarkedDone,
+    });
+    return successResponse(res, SUCCESS, {
+      message: "Problem marked done state updated successfuly.",
+    });
+  } catch (error) {
+    console.error(
+      "Error occured while changing the problem done state: ",
+      error
+    );
+    return errorResponse(res, INTERNAL_SERVER_ERROR, {
+      message: "Error while changing the problem state",
     });
   }
 };

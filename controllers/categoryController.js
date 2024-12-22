@@ -56,12 +56,11 @@ export const getCategoryMetadataBySheetId = async (req, res) => {
     const response = await Promise.all(
       categories.map((categoryId) => dbGetCategoryById({ categoryId }))
     );
-
     return successResponse(res, SUCCESS, { data: response });
   } catch (error) {
-    console.error("Error while fetching users sheet:", error);
+    console.error("Error while fetching sheet's categories:", error);
     return errorResponse(res, INTERNAL_SERVER_ERROR, {
-      message: "Error while fetching users sheet",
+      message: "Error while fetching sheet's categories",
     });
   }
 };

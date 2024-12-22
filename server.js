@@ -14,6 +14,22 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Request Logging Middleware
+app.use((req, res, next) => {
+  const startTime = Date.now();
+  res.on("finish", () => {
+    const endTime = Date.now();
+    const timeTaken = endTime - startTime;
+    console.log(
+      chalk.blue(`[API Log]`),
+      chalk.yellow(`Method: ${req.method}`),
+      chalk.green(`Endpoint: ${req.originalUrl}`),
+      chalk.cyan(`Time Taken: ${timeTaken}ms`)
+    );
+  });
+  next();
+});
+
 // Routes
 import authRoutes from "./routes/authRoutes.js";
 import sheetRoutes from "./routes/sheetRoutes.js";
