@@ -23,6 +23,20 @@ export const addNewProblem = async (req, res) => {
   const userId = req.user;
 
   try {
+    const problemsInDb = await dbGetCategoryById({ categoryId });
+    const problemIdsInDb = problemsInDb?.data?.problemIds || [];
+    const problemsMetaData = await Promise.all(problemIdsInDb.map((problemId) => dbGetProblemById({ problemId })));
+    const duplicateProblems = problemsMetaData.filter((problemDbData) =>
+      problemIds.some((userProblem) => userProblem.lcid === parseInt(problemDbData.lcproblemId))
+    );
+
+    if (duplicateProblems.length > 0) {
+      return errorResponse(res, INTERNAL_SERVER_ERROR, {
+        message: "Please remove the duplicate problems from the list",
+        duplicates: duplicateProblems.map((dup) => dup.lcproblemId),
+      });
+    }
+
     const problemIdsObjectIds = await Promise.all(
       problemIds.map(async (problemId) => {
         const newProblem = new Problem({
@@ -53,9 +67,7 @@ export const addNewProblem = async (req, res) => {
 export const getProblems = async (req, res) => {
   const { problemIds } = req.body;
   try {
-    const responses = await Promise.all(
-      problemIds.map((problemId) => dbGetProblemById({ problemId }))
-    );
+    const responses = await Promise.all(problemIds.map((problemId) => dbGetProblemById({ problemId })));
 
     return successResponse(res, SUCCESS, { data: responses });
   } catch (error) {
@@ -71,9 +83,7 @@ export const getProblemsByCategoryId = async (req, res) => {
   try {
     const categoryData = await dbGetCategoryById({ categoryId });
     const problemIds = categoryData?.data?.problemIds || [];
-    const responses = await Promise.all(
-      problemIds.map((problemId) => dbGetProblemById({ problemId }))
-    );
+    const responses = await Promise.all(problemIds.map((problemId) => dbGetProblemById({ problemId })));
 
     return successResponse(res, SUCCESS, { data: responses });
   } catch (error) {
@@ -88,9 +98,7 @@ export const deleteProblem = async (req, res) => {
   const { problemId, categoryId } = req.query;
   try {
     const categoryData = await dbGetCategoryById({ categoryId });
-    const updatedCategoryProblems = categoryData.data.problemIds.filter(
-      (id) => id != problemId
-    );
+    const updatedCategoryProblems = categoryData.data.problemIds.filter((id) => id != problemId);
     await dbUpdateProblemIdsInCategory({
       categoryId,
       problemIds: updatedCategoryProblems,
@@ -118,10 +126,7 @@ export const markProblemStateChange = async (req, res) => {
       message: "Problem marked done state updated successfuly.",
     });
   } catch (error) {
-    console.error(
-      "Error occured while changing the problem done state: ",
-      error
-    );
+    console.error("Error occured while changing the problem done state: ", error);
     return errorResponse(res, INTERNAL_SERVER_ERROR, {
       message: "Error while changing the problem state",
     });

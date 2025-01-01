@@ -68,6 +68,19 @@ export const getSheetsMetadataByUserId = async (req, res) => {
   }
 };
 
+export const getSheetsMetadataBySheetId = async (req, res) => {
+  const { sheetId } = req.query;
+  try {
+    const response = await dbGetSheetBySheetId({ sheetId });
+    return successResponse(res, SUCCESS, { data: response });
+  } catch (error) {
+    console.error("Error while fetching sheet details:", error);
+    return errorResponse(res, INTERNAL_SERVER_ERROR, {
+      message: "Error while fetching sheet details",
+    });
+  }
+};
+
 export const deleteSheet = async (req, res) => {
   const { sheetId } = req.query;
   try {
