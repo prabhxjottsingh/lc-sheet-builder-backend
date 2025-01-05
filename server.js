@@ -35,10 +35,12 @@ import authRoutes from "./routes/authRoutes.js";
 import sheetRoutes from "./routes/sheetRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import problemRoutes from "./routes/problemRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 app.use("/api/auth", authRoutes);
 app.use("/api/sheet", sheetRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/problem", problemRoutes);
+app.use("/api/user", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 export const JWT_SECRET = process.env.JWT_SECRET || "abcdefghijklmnop";
