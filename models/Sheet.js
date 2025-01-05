@@ -12,10 +12,13 @@ const sheetSchema = new mongoose.Schema({
       type: String,
       trim: true,
     },
-
     createdAt: {
       type: Date,
       default: Date.now,
+    },
+    isPublic: {
+      type: Boolean,
+      default: false,
     },
   },
   data: {

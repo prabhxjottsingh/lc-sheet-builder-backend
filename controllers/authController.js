@@ -3,10 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { errorResponse, successResponse } from "../utils/apiResponse.js";
 import { constants } from "../utils/constants.js";
-import {
-  dbCreateNewUser,
-  dbGetUserByEmail,
-} from "../dbAccessor/userDbAccessor.js";
+import { dbCreateNewUser, dbGetUserByEmail } from "../dbAccessor/userDbAccessor.js";
 import { JWT_EXPIRATION, JWT_SECRET } from "../server.js";
 
 const RESOURCE_CREATED_SUCCESS = constants.STATUS_CODE.RESOURCE_CREATED_SUCCESS;
@@ -72,12 +69,27 @@ export const login = async (req, res) => {
 
     return successResponse(res, SUCCESS_CODE, {
       message: "Logged in successfully",
-      token,
+      data: { token, userId: user._id },
     });
   } catch (err) {
     console.error("Error while logging the user in: ", err);
     return errorResponse(res, INTERNAL_SERVER_ERROR_CODE, {
       message: "Error while logging in. Please try again later.",
+    });
+  }
+};
+
+export const getUserByToken = async (req, res) => {
+  try {
+    const user = req.user;
+    return successResponse(res, SUCCESS_CODE, {
+      message: "User fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    console.error("Error while fetching user by token: ", error);
+    return errorResponse(res, INTERNAL_SERVER_ERROR_CODE, {
+      message: "Error while fetching user by token",
     });
   }
 };

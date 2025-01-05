@@ -11,9 +11,19 @@ export const dbGetSheetBySheetId = async (params) => {
   return sheet;
 };
 
+export const dbGetSheetsByUserId = async (params) => {
+  const sheets = await Sheet.find({ createdBy: params.userId });
+  return sheets;
+};
+
 export const dbGetSheetsMetadataByUserId = async (params) => {
   const sheets = await Sheet.find({ createdBy: params.userId });
   return sheets;
+};
+
+export const dbGetSheetDataByUserId = async (params) => {
+  const sheets = await Sheet.find({ createdBy: params.userId });
+  return sheets.filter((sheet) => sheet.data).map((sheet) => sheet.data);
 };
 
 export const dbAddNewCategoryToSheet = async (params) => {
@@ -23,11 +33,7 @@ export const dbAddNewCategoryToSheet = async (params) => {
 };
 
 export const dbUpdateCategoryIdsInSheet = async (params) => {
-  await Sheet.findByIdAndUpdate(
-    params.sheetId,
-    { "data.categoryIds": params.categoryIds },
-    { new: true }
-  );
+  await Sheet.findByIdAndUpdate(params.sheetId, { "data.categoryIds": params.categoryIds }, { new: true });
 };
 
 export const dbGetCategoryIdsBySheetId = async (params) => {
@@ -40,4 +46,16 @@ export const dbGetCategoryIdsBySheetId = async (params) => {
 
 export const dbDeleteSheetById = async (params) => {
   await Sheet.findByIdAndDelete(params.sheetId);
+};
+
+export const dbToggleSheetPublicStatus = async (params) => {
+  const res = await Sheet.findByIdAndUpdate(
+    params.sheetId,
+    {
+      $set: {
+        "metadata.isPublic": params.isPublic,
+      },
+    },
+    { new: true }
+  );
 };

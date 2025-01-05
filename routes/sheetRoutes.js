@@ -5,6 +5,7 @@ import {
   deleteSheet,
   getSheetsMetadataBySheetId,
   getSheetsMetadataByUserId,
+  makesheetpublic,
 } from "../controllers/sheetController.js";
 import { validateRequest } from "../Middlewares/tyepSafetyValidationCheck.js";
 import { addNewSheetRequest } from "../Middlewares/apiRequestModels/sheetRequestModels.js";
@@ -17,5 +18,7 @@ router.get("/getusersheetsmetadata", decryptAuthToken, getSheetsMetadataByUserId
 router.get("/getsheetdetails", decryptAuthToken, getSheetsMetadataBySheetId);
 
 router.delete("/deletesheet", decryptAuthToken, deleteSheet);
+
+router.post("/makesheetpublic", decryptAuthToken, makesheetpublic);
 
 export default router;

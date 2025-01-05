@@ -18,7 +18,7 @@ export const decryptAuthToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    console.error(error);
+    console.error("Error while decrypting token: ", error);
     return errorResponse(res, UNAUTHORISED, {
       message: "Invalid or expired token",
     });
