@@ -1,4 +1,7 @@
-import { dbCreateNewCategory, dbGetCategoryById } from "../dbAccessor/categoryDbAccessor.js";
+import {
+  dbCreateNewCategory,
+  dbGetCategoryById,
+} from "../dbAccessor/categoryDbAccessor.js";
 import { dbGetProblemById } from "../dbAccessor/problemDbAccessor.js";
 import {
   dbCreateNewSheet,
@@ -21,7 +24,6 @@ const UNAUTHORISED_CODE = constants.STATUS_CODE.UNAUTHORISED;
 
 export const getUserAnalytics = async (req, res) => {
   const { userId } = req.query;
-  console.log("This is the userId:", userId);
   try {
     const sheetsData = await dbGetSheetsByUserId({ userId });
 
@@ -40,11 +42,17 @@ export const getUserAnalytics = async (req, res) => {
 
             // Process problems for the current category
             const problems = await Promise.all(
-              category.data.problemIds.map((problemId) => dbGetProblemById({ problemId }))
+              category.data.problemIds.map((problemId) =>
+                dbGetProblemById({ problemId })
+              )
             );
 
-            const solvedProblemsCount = problems.filter((problem) => problem.isMarkedDone).length;
-            const unsolvedProblemsCount = problems.filter((problem) => !problem.isMarkedDone).length;
+            const solvedProblemsCount = problems.filter(
+              (problem) => problem.isMarkedDone
+            ).length;
+            const unsolvedProblemsCount = problems.filter(
+              (problem) => !problem.isMarkedDone
+            ).length;
 
             return {
               id: category.metadata.name,
