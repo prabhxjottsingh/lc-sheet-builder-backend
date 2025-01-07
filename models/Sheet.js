@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// Sheet Schema
 const sheetSchema = new mongoose.Schema({
   metadata: {
     name: {
@@ -25,7 +24,7 @@ const sheetSchema = new mongoose.Schema({
     categoryIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category", // Reference to the Category model
+        ref: "Category",
       },
     ],
   },

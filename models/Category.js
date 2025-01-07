@@ -22,7 +22,7 @@ const categorySchema = new mongoose.Schema({
     problemIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Problem", // Reference to the Problem model
+        ref: "Problem",
       },
     ],
   },

@@ -28,9 +28,6 @@ export const addNewSheet = async (req, res) => {
         isUserGenerated: false,
         color: "bg-gray-600",
       },
-      //   data: {
-      //     sheetIds: [],
-      //   },
     });
 
     await dbCreateNewCategory(newCategory);

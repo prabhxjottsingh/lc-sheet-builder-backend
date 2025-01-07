@@ -1,26 +1,11 @@
-import {
-  dbCreateNewCategory,
-  dbGetCategoryById,
-} from "../dbAccessor/categoryDbAccessor.js";
+import { dbGetCategoryById } from "../dbAccessor/categoryDbAccessor.js";
 import { dbGetProblemById } from "../dbAccessor/problemDbAccessor.js";
-import {
-  dbCreateNewSheet,
-  dbDeleteSheetById,
-  dbGetSheetBySheetId,
-  dbGetSheetDataByUserId,
-  dbGetSheetsByUserId,
-  dbGetSheetsMetadataByUserId,
-  dbToggleSheetPublicStatus,
-} from "../dbAccessor/sheetDbAccessor.js";
-import { Category } from "../models/Category.js";
-import { Sheet } from "../models/Sheet.js";
+import { dbGetSheetsByUserId } from "../dbAccessor/sheetDbAccessor.js";
 import { errorResponse, successResponse } from "../utils/apiResponse.js";
 import { constants } from "../utils/constants.js";
 
 const INTERNAL_SERVER_ERROR = constants.STATUS_CODE.INTERNAL_SERVER;
-const RESOURCE_CREATED_SUCCESS = constants.STATUS_CODE.RESOURCE_CREATED_SUCCESS;
 const SUCCESS = constants.STATUS_CODE.SUCCESS;
-const UNAUTHORISED_CODE = constants.STATUS_CODE.UNAUTHORISED;
 
 export const getUserAnalytics = async (req, res) => {
   const { userId } = req.query;
@@ -31,7 +16,6 @@ export const getUserAnalytics = async (req, res) => {
       sheetsData.map(async (sheet) => {
         const sheetData = sheet.data;
         const categories = sheetData.categoryIds;
-        const sheetId = sheet._id;
         const sheetName = sheet.metadata.name;
         const sheetDescription = sheet.metadata.description;
 
@@ -42,17 +26,11 @@ export const getUserAnalytics = async (req, res) => {
 
             // Process problems for the current category
             const problems = await Promise.all(
-              category.data.problemIds.map((problemId) =>
-                dbGetProblemById({ problemId })
-              )
+              category.data.problemIds.map((problemId) => dbGetProblemById({ problemId }))
             );
 
-            const solvedProblemsCount = problems.filter(
-              (problem) => problem.isMarkedDone
-            ).length;
-            const unsolvedProblemsCount = problems.filter(
-              (problem) => !problem.isMarkedDone
-            ).length;
+            const solvedProblemsCount = problems.filter((problem) => problem.isMarkedDone).length;
+            const unsolvedProblemsCount = problems.filter((problem) => !problem.isMarkedDone).length;
 
             return {
               id: category.metadata.name,
@@ -61,7 +39,7 @@ export const getUserAnalytics = async (req, res) => {
                 solvedProblemsCount,
                 unsolvedProblemsCount,
               },
-              color: category.metadata.color, // Assuming the category has a color field
+              color: category.metadata.color,
             };
           })
         );

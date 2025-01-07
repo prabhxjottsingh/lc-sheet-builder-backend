@@ -43,8 +43,8 @@ export const addNewProblem = async (req, res) => {
           lcproblemId: problemId.lcid,
           createdBy: userId,
         });
-        const createdProblem = await dbCreateNewProblem(newProblem); // Save to DB
-        return createdProblem._id; // Return the ObjectId of the created problem
+        const createdProblem = await dbCreateNewProblem(newProblem);
+        return createdProblem._id;
       })
     );
 
