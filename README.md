@@ -86,7 +86,7 @@ LC-SHEET-BUILDER-BACKEND/
 
 Create a `.env` file in the root directory and add the following variables:
 
-```json
+```
 # Database Configuration
 MONGO_URI=your_mongodb_connection_string
 
