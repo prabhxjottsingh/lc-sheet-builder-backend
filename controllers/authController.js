@@ -3,7 +3,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { errorResponse, successResponse } from "../utils/apiResponse.js";
 import { constants } from "../utils/constants.js";
-import { dbCreateNewUser, dbGetUserByEmail } from "../dbAccessor/userDbAccessor.js";
+import {
+  dbCreateNewUser,
+  dbGetUserByEmail,
+} from "../dbAccessor/userDbAccessor.js";
 import { JWT_EXPIRATION, JWT_SECRET } from "../server.js";
 
 const RESOURCE_CREATED_SUCCESS = constants.STATUS_CODE.RESOURCE_CREATED_SUCCESS;
@@ -34,10 +37,10 @@ export const signup = async (req, res) => {
       password: password,
     });
     const token = generateToken(newUser);
-
     return successResponse(res, RESOURCE_CREATED_SUCCESS, {
       message: "User registered successfully",
       token,
+      userId: newUser._id,
     });
   } catch (err) {
     console.error("Error while signing up the user: ", err);
