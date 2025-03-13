@@ -1,4 +1,4 @@
-import { JWT_SECRET } from "../server.js";
+import { JWT_SECRET } from "../index.js";
 import { errorResponse } from "../utils/apiResponse.js";
 import { constants } from "../utils/constants.js";
 import jwt from "jsonwebtoken";
