@@ -77,7 +77,7 @@ LC-SHEET-BUILDER-BACKEND/
 ├──── .gitignore
 ├──── package.json
 ├──── package-lock.json
-└──── server.js
+└──── index.js
 ```
 
 ---
