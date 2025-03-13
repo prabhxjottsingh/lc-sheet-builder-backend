@@ -4,6 +4,6 @@ import { validateRequest } from "../Middlewares/tyepSafetyValidationCheck.js";
 import { getUserAnalytics } from "../controllers/userController.js";
 const router = express.Router();
 
-router.get("/useranalytics", getUserAnalytics);
+router.get("/useranalytics", decryptAuthToken, getUserAnalytics);
 
 export default router;
